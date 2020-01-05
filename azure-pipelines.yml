@@ -4,7 +4,7 @@ pr:
 - master
 
 queue:
-  name: windows-latest
+  name: "Azure Pipelines"
 
 steps:
 - powershell: .\bootstrap.ps1
