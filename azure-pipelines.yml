@@ -4,7 +4,7 @@ pr:
 - master
 
 queue:
-  name: windows-2019
+  name: windows-latest
 
 steps:
 - powershell: .\bootstrap.ps1
