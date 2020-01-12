@@ -3,29 +3,19 @@ name: $(Build.DefinitionName)_$(Date:yyyyMMdd))
 pr:
 - master
 
-queue:
-  name: "Azure Pipelines"
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
 
-steps:
-- powershell: .\bootstrap.ps1
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    continueOnError: false
+    steps:
+    - powershell: .\bootstrap.ps1
   displayName: 'Install pre-requisites'
-
-- task: richardfennellBM.BM-VSTS-PesterRunner-Task.Pester-Task.Pester@8
-  displayName: 'Pester Test Runner'
-  inputs:
-    scriptFolder: '$(System.DefaultWorkingDirectory)\tests\*'
-    additionalModulePath: '$(Build.ArtifactStagingDirectory)'
-    resultsFile: '$(Common.TestResultsDirectory)\Test-$(Build.DefinitionName)_$(Build.BuildNumber).xml'
-
-
-- task: PublishTestResults@2
-  displayName: 'Publish Test Results'
-  condition: always()
-  inputs:
-    testRunner: NUnit
-    searchFolder: '$(Common.TestResultsDirectory)'
-
-- powershell: Invoke-Build -Configuration 'Production' -Task Clean, UpdateHelp, CopyModuleFiles, PublishModule
-  displayName: 'Publish PowerShell Module'
-  env:
-    psgallery: $(NugetAPIKey)
