@@ -18,4 +18,15 @@ stages:
     continueOnError: false
     steps:
     - powershell: .\bootstrap.ps1
-  displayName: 'Install pre-requisites'
+   
+    - task: Pester@8
+      inputs:
+          scriptFolder: '$(System.DefaultWorkingDirectory)\tests\*'
+          resultsFile: '$(System.DefaultWorkingDirectory)\Test-Pester.XML'
+          run32Bit: False
+
+    - task: PublishTestResults@2
+      inputs:
+              testResultsFormat: 'NUnit'
+              testResultsFiles: '**/TEST-*.xml'
+              testRunTitle: 'Publish test results'
