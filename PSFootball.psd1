@@ -15,7 +15,7 @@
     Copyright = '(c) 2020 Jan Egil Ring. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = ''
+    Description       = 'PowerShell module for viewing football data'
 
     # Minimum version of the Windows PowerShell engine required by this module
     PowerShellVersion = '3.0'
